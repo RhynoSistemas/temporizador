@@ -472,6 +472,8 @@
                 progressBar.style.width = `${percentage}%`;
             }
 
+            console.log("Percentage: " + percentage);
+
             // Update the background color based on the percentage
             if (percentage >= 100) {
                 document.body.style.backgroundColor = document.getElementById('fourth-change-color').value;
@@ -597,6 +599,37 @@
             // Play the audio
             audio.play();
         }
+
+        function setTimerForSeconds(totalSeconds, minutesControlName, secondsControlName) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            
+            console.log("setTimerForSeconds: ", totalSeconds, minutes, seconds);
+
+            document.getElementById(minutesControlName).value = minutes;
+            document.getElementById(secondsControlName).value = seconds;
+        }
+
+        function calculateTime() {
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            const totalSeconds = (minutes * 60) + seconds;
+            
+            const twentyFivePercentSeconds = Math.floor(totalSeconds * 0.75);
+            const fiftyPercentSeconds = Math.floor(totalSeconds * 0.50);
+            const seventyFivePercentSeconds = Math.floor(totalSeconds * 0.25);
+
+            setTimerForSeconds(twentyFivePercentSeconds, 'first-change-minutes', 'first-change-seconds');
+            setTimerForSeconds(fiftyPercentSeconds, 'second-change-minutes', 'second-change-seconds');
+            setTimerForSeconds(seventyFivePercentSeconds, 'third-change-minutes', 'third-change-seconds');
+            setTimerForSeconds(totalSeconds, 'fourth-change-minutes', 'fourth-change-seconds');
+        }
+
+        document.getElementById('minutes').addEventListener('input', calculateTime);
+        document.getElementById('seconds').addEventListener('input', calculateTime);
+
+        calculateTime();
     </script>
 </body>
 
