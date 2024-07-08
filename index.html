@@ -23,7 +23,6 @@
             background-color: black;
             margin: 0;
 
-            --bs-border-radius: 0.375rem !important;
             --the7-input-border-radius: 2px !important;
         }
 
@@ -67,6 +66,20 @@
             /* Ancho para acomodar dos dígitos */
             text-align: right;
             margin-bottom: 0px !important;
+            color: #000000;
+        }
+
+        .form-control{
+            border-radius: 0.375rem !important;
+        }
+
+        .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control{
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+        .input-group>.form-floating:not(:first-child)>.form-control{
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
         }
 
         .input-group .form-floating {}
@@ -89,18 +102,18 @@
         }
 
         .color-picker {
-            border: 1px solid #ced4da;
+            border: 1px solid #dee2e6;
             /* Color del borde */
-            border-radius: 10px;
+            border-radius: 0.375rem;
             /* Borde redondeado */
-            padding: 4px;
+            padding: 7px;
             /* Espaciado interno */
             padding-left: 10px;
             padding-right: 10px;
         }
 
         .color-picker label {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             /* Espaciado debajo del label */
         }
 
@@ -124,8 +137,12 @@
             background-color: #fff;
         }
 
+        .modal-body {
+            padding: 1.5rem !important;
+        }
+
         .modal-text {
-            font-size: 18px;
+            font-size: 14px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
@@ -171,56 +188,70 @@
             margin: 0 auto;
             /* Centrado horizontal */
         }
+
+        .form-floating > .form-control:not(:placeholder-shown)~label {
+            color: rgba(var(--bs-body-color-rgb), .65) !important;   
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 14px !important;
+        }
+
+        .color-title {
+            color: rgba(var(--bs-body-color-rgb), .65) !important;
+            font-family: 'Roboto', sans-serif;     
+            font-size: 14px;
+            transform: scale(.85) translateY(-0.3rem) translateX(0.15rem);
+        }
     </style>
 </head>
 
 <body>
-        <div class="content-wrapper">
+    <div class="content-wrapper">
 
-            <!-- Logo Partner -->
-            <div class="text-center mb-4">
-                <img src="https://lideresagilistas.com/wp-content/uploads/2024/07/LogoLideresClaropPeque80.png" alt="logo-partner" class="header-image">
+        <!-- Logo Partner -->
+        <!-- 
+        <div class="text-center mb-4">
+            <img src="https://lideresagilistas.com/wp-content/uploads/2024/07/LogoLideresClaropPeque80.png" alt="logo-partner" class="header-image">
+        </div> 
+        -->
+
+        <!-- Timer -->
+        <div class="text-center mb-4">
+            <!-- Remaining time -->
+            <div id="timer-display" class>05:00</div>
+
+            <!-- Elapsed time -->
+            <div>
+                <label id="total-time-display">Tiempo total:</label>
+                <label id="elapsed-time-display" class="text-grey">00:00</label>
             </div>
 
-            <!-- Timer -->
-            <div class="text-center mb-4">
-                <!-- Remaining time -->
-                <div id="timer-display" class>05:00</div>
-
-                <!-- Elapsed time -->
-                <div>
-                    <label id="total-time-display">Tiempo total:</label>
-                    <label id="elapsed-time-display" class="text-grey">00:00</label>
+            <!-- Progress bar -->
+            <div id="progress-bar-container" class="progress" role="progressbar" aria-label="Basic example" aria-valuemin="0" aria-valuemax="100">
+                <div id="progress-bar" class="progress-bar"></div>
                 </div>
 
-                <!-- Progress bar -->
-                <div id="progress-bar-container" class="progress" role="progressbar" aria-label="Basic example" aria-valuemin="0" aria-valuemax="100">
-                    <div id="progress-bar" class="progress-bar"></div>
-                  </div>
-    
-                <!-- Controls -->
-                <div class="controls mt-4">
-                    <button class="btn btn-white border rounded-pill" data-bs-toggle="modal" data-bs-target="#settings-modal">
-                        <i class="bi bi-gear-fill"></i>
-                    </button>
-    
-                    <button class="btn btn-white border rounded-pill" id="start-stop-btn" onclick="initTimer()">
-                        <i class="bi bi-play-fill"></i>
-                    </button>
-    
-                    <button class="btn btn-white border rounded-pill" onclick="resetTimer()">
-                        <i class="bi bi-arrow-clockwise"></i>
-                    </button>
-                </div>
+            <!-- Controls -->
+            <div class="controls mt-4">
+                <button class="btn btn-white border rounded-pill" data-bs-toggle="modal" data-bs-target="#settings-modal">
+                    <i class="bi bi-gear-fill"></i>
+                </button>
+
+                <button class="btn btn-white border rounded-pill" id="start-stop-btn" onclick="initTimer()">
+                    <i class="bi bi-play-fill"></i>
+                </button>
+
+                <button class="btn btn-white border rounded-pill" onclick="resetTimer()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
             </div>
-
-            <!-- Footer -->
-            <footer class="comic-font text-white">
-                <p>Provided by <a href="https://lideresagilistas.com" target="_blank"><img
-                            src="https://lideresagilistas.com/wp-content/uploads/2024/07/LogoLideresClaropPeque80.png" alt="Logo"></a></p>
-            </footer>
         </div>
 
+        <!-- Footer -->
+        <footer class="comic-font text-white">
+            <p>Provided by <a href="https://lideresagilistas.com" target="_blank"><img
+                        src="https://lideresagilistas.com/wp-content/uploads/2024/07/LogoLideresClaropPeque80.png" alt="Logo"></a></p>
+        </footer>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -230,7 +261,7 @@
                     <h1 class="modal-title fs-5 text-black roboto-font" id="exampleModalLabel">Configuraci&oacute;n</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body roboto-font">
                     <p class="mb-3 modal-text roboto-font text-grey">
                         Configura el cronometro para tu presentación, el fondo de la pantalla cambiará de color según los cortes configurados, simulando
                         levantar una
@@ -257,11 +288,11 @@
                             </div>
 
                             <div class="color-picker d-flex flex-column justify-content-center align-items-center ">
-                                <label for="initial-color" class="text-grey">Color</label>
-                                <input type="color" id="initial-color" class="color-input" value="#ff0000">
+                                <label for="initial-color" class="color-title">Color</label>
+                                <input type="color" id="initial-color" class="color-input" value="#263238">
                             </div>
 
-                            <div>
+                            <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="initial-sound">
                                 <label class="form-check-label modal-text roboto-font text-black" for="initial-sound">Sonido</label>
                             </div>
@@ -282,22 +313,22 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="first-change-minutes" min="0" max="59" placeholder="MM" value="2">
-                                            <label for="first-change-minutes">Minutos</label>
+                                            <label for="first-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="first-change-seconds" min="0" max="59" placeholder="SS" value="30">
-                                            <label for="first-change-seconds">Segundos</label>
+                                            <label for="first-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="color-picker d-flex flex-column justify-content-center align-items-center ">
-                                    <label for="first-change-color" class="text-grey">Color</label>
-                                    <input type="color" id="first-change-color" class="color-input" value="#0D9A2C">
+                                    <label for="first-change-color" class="color-title">Color</label>
+                                    <input type="color" id="first-change-color" class="color-input" value="#2C3C9B">
                                 </div>
 
-                                <div>
+                                <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="first-sound">
                                     <label class="form-check-label modal-text roboto-font text-black" for="first-sound">Sonido</label>
                                 </div>
@@ -315,22 +346,22 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="second-change-minutes" min="0" max="59" placeholder="MM" value="5">
-                                            <label for="second-change-minutes">Minutos</label>
+                                            <label for="second-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="second-change-seconds" min="0" max="59" placeholder="SS" value="0">
-                                            <label for="second-change-seconds">Segundos</label>
+                                            <label for="second-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="color-picker d-flex flex-column justify-content-center align-items-center ">
-                                    <label for="second-change-color" class="text-grey">Color</label>
-                                    <input type="color" id="second-change-color" class="color-input" value="#0D9A2C">
+                                    <label for="second-change-color" class="color-title">Color</label>
+                                    <input type="color" id="second-change-color" class="color-input" value="#43A047">
                                 </div>
 
-                                <div>
+                                <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="second-sound">
                                     <label class="form-check-label modal-text roboto-font text-black" for="second-sound">Sonido</label>
                                 </div>
@@ -348,22 +379,22 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="third-change-minutes" min="0" max="59" placeholder="MM" value="7">
-                                            <label for="third-change-minutes">Minutos</label>
+                                            <label for="third-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="third-change-seconds" min="0" max="59" placeholder="SS" value="30">
-                                            <label for="third-change-seconds">Segundos</label>
+                                            <label for="third-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="color-picker d-flex flex-column justify-content-center align-items-center ">
-                                    <label for="third-change-color" class="text-grey">Color</label>
-                                    <input type="color" id="third-change-color" class="color-input" value="#C3BC08">
+                                    <label for="third-change-color" class="color-title">Color</label>
+                                    <input type="color" id="third-change-color" class="color-input" value="#FFA000">
                                 </div>
 
-                                <div>
+                                <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="third-sound">
                                     <label class="form-check-label modal-text roboto-font text-black" for="third-sound">Sonido</label>
                                 </div>
@@ -381,22 +412,22 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="fourth-change-minutes" min="0" max="59" placeholder="MM" value="10">
-                                            <label for="fourth-change-minutes">Minutos</label>
+                                            <label for="fourth-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
                                             <input type="number" class="form-control" id="fourth-change-seconds" min="0" max="59" placeholder="SS" value="0">
-                                            <label for="fourth-change-seconds">Segundos</label>
+                                            <label for="fourth-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="color-picker d-flex flex-column justify-content-center align-items-center ">
-                                    <label for="fourth-change-color" class="text-grey">Color</label>
-                                    <input type="color" id="fourth-change-color" class="color-input" value="#DC0606">
+                                    <label for="fourth-change-color" class="color-title">Color</label>
+                                    <input type="color" id="fourth-change-color" class="color-input" value="#D32F2F">
                                 </div>
 
-                                <div>
+                                <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="fourth-sound">
                                     <label class="form-check-label modal-text roboto-font text-black" for="fourth-sound">Sonido</label>
                                 </div>
@@ -472,8 +503,6 @@
                 progressBar.style.width = `${percentage}%`;
             }
 
-            console.log("Percentage: " + percentage);
-
             // Update the background color based on the percentage
             if (percentage >= 100) {
                 document.body.style.backgroundColor = document.getElementById('fourth-change-color').value;
@@ -504,7 +533,12 @@
                     playSound();
                 }
             } else {
-                document.body.style.backgroundColor = document.getElementById('initial-color').value;
+                if(isRunning) {
+                    document.body.style.backgroundColor = document.getElementById('initial-color').value;
+                }
+                else {
+                    document.body.style.backgroundColor = '#000000';
+                }
             }
         }
 
@@ -604,9 +638,6 @@
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
 
-            
-            console.log("setTimerForSeconds: ", totalSeconds, minutes, seconds);
-
             document.getElementById(minutesControlName).value = minutes;
             document.getElementById(secondsControlName).value = seconds;
         }
@@ -616,14 +647,14 @@
             const seconds = parseInt(document.getElementById('seconds').value) || 0;
             const totalSeconds = (minutes * 60) + seconds;
             
-            const twentyFivePercentSeconds = Math.floor(totalSeconds * 0.75);
+            const twentyFivePercentSeconds = Math.floor(totalSeconds * 0.25);
             const fiftyPercentSeconds = Math.floor(totalSeconds * 0.50);
-            const seventyFivePercentSeconds = Math.floor(totalSeconds * 0.25);
+            const seventyFivePercentSeconds = Math.floor(totalSeconds * 0.75);
 
             setTimerForSeconds(twentyFivePercentSeconds, 'first-change-minutes', 'first-change-seconds');
             setTimerForSeconds(fiftyPercentSeconds, 'second-change-minutes', 'second-change-seconds');
             setTimerForSeconds(seventyFivePercentSeconds, 'third-change-minutes', 'third-change-seconds');
-            setTimerForSeconds(totalSeconds, 'fourth-change-minutes', 'fourth-change-seconds');
+            setTimerForSeconds(0, 'fourth-change-minutes', 'fourth-change-seconds');
         }
 
         document.getElementById('minutes').addEventListener('input', calculateTime);
