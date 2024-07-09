@@ -310,12 +310,12 @@
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="first-change-minutes" min="0" max="59" placeholder="MM" value="2">
+                                            <input type="number" class="form-control" id="first-change-minutes" min="0" max="59" placeholder="MM" value="1">
                                             <label for="first-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="first-change-seconds" min="0" max="59" placeholder="SS" value="30">
+                                            <input type="number" class="form-control" id="first-change-seconds" min="0" max="59" placeholder="SS" value="15">
                                             <label for="first-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
@@ -343,12 +343,12 @@
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="second-change-minutes" min="0" max="59" placeholder="MM" value="5">
+                                            <input type="number" class="form-control" id="second-change-minutes" min="0" max="59" placeholder="MM" value="2">
                                             <label for="second-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="second-change-seconds" min="0" max="59" placeholder="SS" value="0">
+                                            <input type="number" class="form-control" id="second-change-seconds" min="0" max="59" placeholder="SS" value="30">
                                             <label for="second-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
@@ -376,12 +376,12 @@
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="third-change-minutes" min="0" max="59" placeholder="MM" value="7">
+                                            <input type="number" class="form-control" id="third-change-minutes" min="0" max="59" placeholder="MM" value="3">
                                             <label for="third-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="third-change-seconds" min="0" max="59" placeholder="SS" value="30">
+                                            <input type="number" class="form-control" id="third-change-seconds" min="0" max="59" placeholder="SS" value="45">
                                             <label for="third-change-seconds" class="roboto-font">Segundos</label>
                                         </div>
                                     </div>
@@ -409,7 +409,7 @@
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="fourth-change-minutes" min="0" max="59" placeholder="MM" value="10">
+                                            <input type="number" class="form-control" id="fourth-change-minutes" min="0" max="59" placeholder="MM" value="5">
                                             <label for="fourth-change-minutes" class="roboto-font">Minutos</label>
                                         </div>
                                         <span class="input-group-text">:</span>
@@ -505,7 +505,7 @@
                 progressBar.style.width = `${percentage}%`;
             }
 
-            console.log("Percentage: " + percentage, fourthChangeTIme, thirdChangeTIme, secondChangeTime, firstChangeTime, timeRemaining, totalDuration, isRunning, isPaused);
+            // console.log("Percentage: " + percentage, fourthChangeTIme, thirdChangeTIme, secondChangeTime, firstChangeTime, timeRemaining, totalDuration, isRunning, isPaused);
             // Update the background color based on the percentage
             if (percentage >= fourthChangeTIme) {
                 document.body.style.backgroundColor = document.getElementById('fourth-change-color').value;
@@ -596,7 +596,7 @@
                     elapsedTime += 1;
                     const percentage = 100 - ((timeRemaining / totalDuration) * 100);
 
-                    console.log("Percentage: " + percentage, timeRemaining, totalDuration);
+                    // console.log("Percentage: " + percentage, timeRemaining, totalDuration);
 
                     updateDisplay(percentage);
                 }
@@ -656,8 +656,8 @@
             clearInterval(timerInterval);
 
             // Reset the minutes and seconds inputs
-            document.getElementById('minutes').value = 5;            
-            document.getElementById('seconds').value = 0;
+            // document.getElementById('minutes').value = 5;            
+            // document.getElementById('seconds').value = 0;
 
             // Reset the progress bar width
             document.getElementById('progress-bar').style.width = '0%';
@@ -666,14 +666,14 @@
             document.body.style.backgroundColor = '#000000';
 
             // Reset the time change inputs
-            document.getElementById('first-change-minutes').value = 1;
-            document.getElementById('first-change-seconds').value = 15;
-            document.getElementById('second-change-minutes').value = 2;
-            document.getElementById('second-change-seconds').value = 30;
-            document.getElementById('third-change-minutes').value = 3;
-            document.getElementById('third-change-seconds').value = 45;
-            document.getElementById('fourth-change-minutes').value = 0;
-            document.getElementById('fourth-change-seconds').value = 0;
+            // document.getElementById('first-change-minutes').value = 1;
+            // document.getElementById('first-change-seconds').value = 15;
+            // document.getElementById('second-change-minutes').value = 2;
+            // document.getElementById('second-change-seconds').value = 30;
+            // document.getElementById('third-change-minutes').value = 3;
+            // document.getElementById('third-change-seconds').value = 45;
+            // document.getElementById('fourth-change-minutes').value = 5;
+            // document.getElementById('fourth-change-seconds').value = 0;
 
             // Calculate the initial seconds based on the minutes and seconds inputs
             const minutesInput = document.getElementById('minutes').value;
@@ -742,7 +742,7 @@
             setTimerForSeconds(twentyFivePercentSeconds, 'first-change-minutes', 'first-change-seconds');
             setTimerForSeconds(fiftyPercentSeconds, 'second-change-minutes', 'second-change-seconds');
             setTimerForSeconds(seventyFivePercentSeconds, 'third-change-minutes', 'third-change-seconds');
-            setTimerForSeconds(0, 'fourth-change-minutes', 'fourth-change-seconds');
+            setTimerForSeconds(totalSeconds, 'fourth-change-minutes', 'fourth-change-seconds');
         }
 
         document.getElementById('minutes').addEventListener('input', calculateTime);
