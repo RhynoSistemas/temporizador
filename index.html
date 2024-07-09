@@ -26,8 +26,6 @@
             --the7-input-border-radius: 2px !important;
         }
 
-        header-image {}
-
         #timer-display {
             font-size: 20vw;
             color: #FFFFFF;
@@ -221,7 +219,7 @@
 
             <!-- Elapsed time -->
             <div>
-                <label id="total-time-display">Tiempo total:</label>
+                <label id="total-time-display">Tiempo total:&nbsp;</label>
                 <label id="elapsed-time-display" class="text-grey">00:00</label>
             </div>
 
@@ -254,12 +252,12 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="modalTitleTime" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-black roboto-font" id="exampleModalLabel">Configuraci&oacute;n</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header justify-content-between align-items-center">
+                        <h1 class="modal-title fs-5 text-black roboto-font" id="modalTitleTime">Configuraci&oacute;n</h1>
+                        <button type="button" class="btn btn-outline-primary roboto-font" data-bs-dismiss="modal" onclick="reConfigureTime()">Configurar</button>
                 </div>
                 <div class="modal-body roboto-font">
                     <p class="mb-3 modal-text roboto-font text-grey">
@@ -449,16 +447,22 @@
         let timerInterval;
         let isPaused = true;
         let isRunning = false;
+        
+        let elapsedTime = 0;
         let timeRemaining;
-        let totalDuration;
 
-        let totalSeconds;
         let initialSeconds;
+        let totalDuration;
 
         let fourthSoundPlay = false;
         let thirdSoundPlay = false;
         let secondSoundPlay = false;
         let firstSoundPlay = false;
+
+        let firstChangeTime = 0;
+        let secondChangeTime = 0;
+        let thirdChangeTIme = 0;
+        let fourthChangeTIme = 0;
 
         /**
          * Formats the given number of seconds into a string in the format 'MM:SS'.
@@ -486,8 +490,6 @@
          * Also updates the background color based on the percentage of time left.
          */
         function updateDisplay(percentage) {
-            // Calculate the minutes and seconds
-            const elapsedTime = totalDuration - timeRemaining;
 
             // Update the timer display
             document.getElementById('timer-display').textContent = formatTime(timeRemaining);
@@ -503,29 +505,30 @@
                 progressBar.style.width = `${percentage}%`;
             }
 
+            console.log("Percentage: " + percentage, fourthChangeTIme, thirdChangeTIme, secondChangeTime, firstChangeTime, timeRemaining, totalDuration, isRunning, isPaused);
             // Update the background color based on the percentage
-            if (percentage >= 100) {
+            if (percentage >= fourthChangeTIme) {
                 document.body.style.backgroundColor = document.getElementById('fourth-change-color').value;
                 // Play the fourth sound if enabled and not already played
                 if (document.getElementById('fourth-sound').checked && !fourthSoundPlay) {
                     fourthSoundPlay = true;
                     playSound();
                 }
-            } else if (percentage >= 75) {
+            } else if (percentage >= thirdChangeTIme) {
                 document.body.style.backgroundColor = document.getElementById('third-change-color').value;
                 // Play the third sound if enabled and not already played
                 if (document.getElementById('third-sound').checked && !thirdSoundPlay) {
                     thirdSoundPlay = true;
                     playSound();
                 }
-            } else if (percentage >= 50) {
+            } else if (percentage >= secondChangeTime) {
                 document.body.style.backgroundColor = document.getElementById('second-change-color').value;
                 // Play the second sound if enabled and not already played
                 if (document.getElementById('second-sound').checked && !secondSoundPlay) {
                     secondSoundPlay = true;
                     playSound();
                 }
-            } else if (percentage >= 25) {
+            } else if (percentage >= firstChangeTime) {
                 document.body.style.backgroundColor = document.getElementById('first-change-color').value;
                 // Play the first sound if enabled and not already played
                 if (document.getElementById('first-sound').checked && !firstSoundPlay) {
@@ -562,12 +565,8 @@
                 // Calculate the total seconds by multiplying the minutes input by 60 and adding the seconds input
                 initialSeconds = parseInt(minutesInput) * 60 + parseInt(secondsInput);
 
-                // Initialize the total seconds and total participation seconds
-                totalSeconds = initialSeconds;
-
                 // If the timer is not already running, set the total duration and start the timer
                 if (!isRunning) {
-                    totalDuration = initialSeconds;
                     isRunning = true;
                     startTimer(timeRemaining || initialSeconds);
                 }
@@ -594,33 +593,113 @@
             timerInterval = setInterval(() => {
                 if (!isPaused) {
                     timeRemaining -= 1;
-                    const percentage = 100 - ((timeRemaining / duration) * 100);
+                    elapsedTime += 1;
+                    const percentage = 100 - ((timeRemaining / totalDuration) * 100);
+
+                    console.log("Percentage: " + percentage, timeRemaining, totalDuration);
 
                     updateDisplay(percentage);
                 }
             }, 1000);
         }
 
+        function reConfigureTime(){
+            const minutes = parseFloat(document.getElementById('minutes').value) || 0;
+            const seconds = parseFloat(document.getElementById('seconds').value) || 0;
+            const totalSeconds = (minutes * 60) + seconds;
+
+            const firstChangeMinutes= parseFloat(document.getElementById('first-change-minutes').value) || 0;
+            const firstChangeSeconds = parseFloat(document.getElementById('first-change-seconds').value) || 0;
+            const firstChangeTotalSeconds = (firstChangeMinutes * 60) + firstChangeSeconds;
+
+            const secondChangeMinutes= parseFloat(document.getElementById('second-change-minutes').value) || 0;
+            const secondChangeSeconds = parseFloat(document.getElementById('second-change-seconds').value) || 0;
+            const secondChangeTotalSeconds = (secondChangeMinutes * 60) + secondChangeSeconds;
+
+            const thirdChangeMinutes= parseFloat(document.getElementById('third-change-minutes').value) || 0;
+            const thirdChangeSeconds = parseFloat(document.getElementById('third-change-seconds').value) || 0;
+            const thirdChangeTotalSeconds = (thirdChangeMinutes * 60) + thirdChangeSeconds;
+
+            const fourthChangeMinutes = parseFloat(document.getElementById('fourth-change-minutes').value) || 0;
+            const fourthChangeSeconds = parseFloat(document.getElementById('fourth-change-seconds').value) || 0;
+            const fourthChangeTotalSeconds = (fourthChangeMinutes * 60) + fourthChangeSeconds;
+            
+            // const twentyFivePercentSeconds = Math.floor(totalSeconds * 0.25);
+            // const fiftyPercentSeconds = Math.floor(totalSeconds * 0.50);
+            // const seventyFivePercentSeconds = Math.floor(totalSeconds * 0.75);
+
+            firstChangeTime = (firstChangeTotalSeconds > 0) ? (firstChangeTotalSeconds / totalSeconds) * 100 : 100;
+            secondChangeTime = (secondChangeTotalSeconds > 0) ? (secondChangeTotalSeconds / totalSeconds) * 100 : 100;
+            thirdChangeTIme = (thirdChangeTotalSeconds > 0) ? (thirdChangeTotalSeconds / totalSeconds) * 100 : 100;
+            fourthChangeTIme = (fourthChangeTotalSeconds > 0) ? (fourthChangeTotalSeconds / totalSeconds) * 100 : 100;
+
+            setTimerForSeconds(firstChangeTotalSeconds, 'first-change-minutes', 'first-change-seconds');
+            setTimerForSeconds(secondChangeTotalSeconds, 'second-change-minutes', 'second-change-seconds');
+            setTimerForSeconds(thirdChangeTotalSeconds, 'third-change-minutes', 'third-change-seconds');
+            setTimerForSeconds(fourthChangeTotalSeconds, 'fourth-change-minutes', 'fourth-change-seconds');
+
+            timeRemaining = totalSeconds;
+            totalDuration = totalSeconds;
+
+            document.getElementById('progress-bar').style.width = '0%';
+            updateDisplay(0);
+        }
+
+        /**
+         * Resets the timer to its initial state.
+         */
         function resetTimer() {
+            // Reset the start-stop button to the initial state
+            document.getElementById('start-stop-btn').innerHTML = '<i class="bi bi-play-fill"></i>';
+
+            // Clear the timer interval
+            clearInterval(timerInterval);
+
+            // Reset the minutes and seconds inputs
+            document.getElementById('minutes').value = 5;            
+            document.getElementById('seconds').value = 0;
+
+            // Reset the progress bar width
+            document.getElementById('progress-bar').style.width = '0%';
+
+            // Reset the background color
+            document.body.style.backgroundColor = '#000000';
+
+            // Reset the time change inputs
+            document.getElementById('first-change-minutes').value = 1;
+            document.getElementById('first-change-seconds').value = 15;
+            document.getElementById('second-change-minutes').value = 2;
+            document.getElementById('second-change-seconds').value = 30;
+            document.getElementById('third-change-minutes').value = 3;
+            document.getElementById('third-change-seconds').value = 45;
+            document.getElementById('fourth-change-minutes').value = 0;
+            document.getElementById('fourth-change-seconds').value = 0;
+
+            // Calculate the initial seconds based on the minutes and seconds inputs
             const minutesInput = document.getElementById('minutes').value;
             const secondsInput = document.getElementById('seconds').value;
-
             initialSeconds = parseInt(minutesInput) * 60 + parseInt(secondsInput);
-            totalSeconds = initialSeconds;
-            timeRemaining = initialSeconds;
 
+            // Reset the total seconds, time remaining, and total duration
+            timeRemaining = initialSeconds;
+            totalDuration = initialSeconds;
+            elapsedTime = 0;
+
+            // Update the timer display and total time display
+            document.getElementById('timer-display').textContent = formatTime(timeRemaining);
+            document.getElementById('elapsed-time-display').textContent = formatTime(0);
+
+            // Reset the timer state
             isPaused = true;
             isRunning = false;
-            
+
+            // Reset the sound play flags
             firstSoundPlay = false;
             secondSoundPlay = false;
             thirdSoundPlay = false;
             fourthSoundPlay = false;
 
-            document.getElementById('start-stop-btn').innerHTML = '<i class="bi bi-play-fill"></i>';
-            clearInterval(timerInterval);
-
-            updateDisplay(0);
+            reConfigureTime();
         }
 
         /**
@@ -634,10 +713,19 @@
             audio.play();
         }
 
+        /**
+         * Sets the values of the minutes and seconds inputs to the given total seconds.
+         *
+         * @param {number} totalSeconds - The total number of seconds to set.
+         * @param {string} minutesControlName - The id of the minutes input element.
+         * @param {string} secondsControlName - The id of the seconds input element.
+         */
         function setTimerForSeconds(totalSeconds, minutesControlName, secondsControlName) {
+            // Calculate the number of minutes and seconds from the total seconds
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
 
+            // Set the values of the input elements
             document.getElementById(minutesControlName).value = minutes;
             document.getElementById(secondsControlName).value = seconds;
         }
@@ -660,7 +748,7 @@
         document.getElementById('minutes').addEventListener('input', calculateTime);
         document.getElementById('seconds').addEventListener('input', calculateTime);
 
-        calculateTime();
+        resetTimer();
     </script>
 </body>
 
